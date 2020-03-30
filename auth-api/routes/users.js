@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const {User, validate} = require("../models/user");
 const express = require("express");
 const router = express.Router();
@@ -7,7 +8,7 @@ router.post("/", async (req, res) => {
     if(error) return res.status(400).send(error.details[0].message);
 
     let user = await User.findOne({ email: req.body.email });
-    if(user) res.status(400).send('User already registerd');
+    if(user) return res.status(400).send('User already registerd');
 
     user = new User({
         name: req.body.name,
@@ -16,7 +17,8 @@ router.post("/", async (req, res) => {
     });
 
     user = await user.save();
-    res.send(user);
+
+    res.send(_.pick (user, ["name", "email"]));
 })
 
 module.exports = router;

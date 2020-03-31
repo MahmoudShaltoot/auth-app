@@ -1,3 +1,4 @@
+const config = require("config");
 const express = require("express");
 const app = express();
 
@@ -5,4 +6,6 @@ require("./startup/validate")();
 require("./startup/db")();
 require("./startup/routes")(app);
 
-app.listen(3900, console.log("connected to server on port 3900"));
+const PORT = process.env.PORT || config.get("port");
+
+app.listen(PORT, console.log(`Connected to server on port ${PORT}`));

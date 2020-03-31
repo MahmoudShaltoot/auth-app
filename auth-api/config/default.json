@@ -1,3 +1,5 @@
 {
-    "jwtPrivateKey" : ""
+    "jwtPrivateKey" : "",
+    "db": "mongodb://localhost/auth-db",
+    "port": 3900
 }

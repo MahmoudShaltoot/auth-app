@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+const config = require("config");
 const bcrypt = require("bcryptjs");
 const _ = require("lodash");
 const auth = require("../middleware/auth");
@@ -24,7 +26,8 @@ router.post("/", async (req, res) => {
     
     user = await user.save();
 
-    res.send(_.pick (user, ["_id", "name", "email"]));
+    const token = jwt.sign({_id: user._id}, config.get('jwtPrivateKey'));
+    res.header('x-auth-token', token).send(_.pick (user, ["_id", "name", "email"]));
 })
 
 module.exports = router;

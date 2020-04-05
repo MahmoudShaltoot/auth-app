@@ -9,10 +9,13 @@ const router = express.Router();
 
 router.get("/me", auth, async(req, res) => {
     const user = await User.findOne({ _id: req.user._id }).select('-password');
-    res.send(user);
+    res.send(({
+        status: 'success',
+        data: user
+      }));
 })
 
-router.post("/", async (req, res) => {
+router.post("/register", async (req, res) => {
     const { error } = validate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
@@ -27,7 +30,10 @@ router.post("/", async (req, res) => {
     user = await user.save();
 
     const token = jwt.sign({_id: user._id}, config.get('jwtPrivateKey'));
-    res.header('x-auth-token', token).send(_.pick (user, ["_id", "name", "email"]));
+    res.send({
+        status: 'success',
+        data: token
+      })
 })
 
 module.exports = router;

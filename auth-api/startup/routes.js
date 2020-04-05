@@ -4,6 +4,6 @@ const express = require("express");
 
 module.exports = (app) => {
     app.use(express.json());
-    app.use('/api/users', users);
-    app.use('/api/auth', auth);
+    app.use('/api', users);
+    app.use('/api', auth);
 }
